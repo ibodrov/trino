@@ -181,6 +181,7 @@
         <module>plugin/trino-thrift-testing-server</module>
         <module>plugin/trino-tpcds</module>
         <module>plugin/trino-tpch</module>
+        <module>plugin/trino-telemetry-collector</module>
         <module>service/trino-proxy</module>
         <module>service/trino-verifier</module>
         <module>testing/trino-benchmark</module>
@@ -654,6 +655,12 @@
                 <groupId>io.trino</groupId>
                 <artifactId>trino-sqlserver</artifactId>
                 <type>test-jar</type>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.trino</groupId>
+                <artifactId>trino-telemetry-collector</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
