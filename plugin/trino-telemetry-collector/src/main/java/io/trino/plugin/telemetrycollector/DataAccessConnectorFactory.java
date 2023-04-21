@@ -28,7 +28,6 @@ public class DataAccessConnectorFactory
         requireNonNull(config, "config is null");
         checkSpiVersion(context, this);
 
-        // A plugin is not required to use Guice; it is just very convenient
         Bootstrap app = new Bootstrap(
                 new JsonModule(),
                 new TypeDeserializerModule(context.getTypeManager()),
