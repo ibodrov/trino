@@ -15,7 +15,7 @@ package io.trino.plugin.telemetrycollector;
 
 import io.trino.spi.connector.ConnectorMetadata;
 
-public class DataAccessMetadata
+public class TelemetryDataMetadata
         implements ConnectorMetadata
 {
 

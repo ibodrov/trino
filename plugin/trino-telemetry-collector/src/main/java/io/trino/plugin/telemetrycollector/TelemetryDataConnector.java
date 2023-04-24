@@ -30,13 +30,13 @@ import java.util.Set;
 import static io.trino.spi.type.VarcharType.VARCHAR;
 import static java.util.Objects.requireNonNull;
 
-public class DataAccessConnector
+public class TelemetryDataConnector
         implements Connector
 {
-    private final DataAccessMetadata metadata;
+    private final TelemetryDataMetadata metadata;
 
     @Inject
-    public DataAccessConnector(DataAccessMetadata metadata)
+    public TelemetryDataConnector(TelemetryDataMetadata metadata)
     {
         this.metadata = requireNonNull(metadata, "metadata is null");
     }
@@ -56,7 +56,7 @@ public class DataAccessConnector
     @Override
     public ConnectorSplitManager getSplitManager()
     {
-        return new DataAccessSplitManager();
+        return new TelemetryDataSplitManager();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class DataAccessConnector
     @Override
     public ConnectorTransactionHandle beginTransaction(IsolationLevel isolationLevel, boolean readOnly, boolean autoCommit)
     {
-        return DataAccessTransactionHandle.INSTANCE;
+        return TelemetryDataTransactionHandle.INSTANCE;
     }
 
     @Override

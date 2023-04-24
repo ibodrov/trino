@@ -10,7 +10,7 @@ public class TelemetryCollectorModule
     @Override
     public void configure(Binder binder)
     {
-        binder.bind(DataAccessConnector.class).in(Scopes.SINGLETON);
-        binder.bind(DataAccessMetadata.class).in(Scopes.SINGLETON);
+        binder.bind(TelemetryDataConnector.class).in(Scopes.SINGLETON);
+        binder.bind(TelemetryDataMetadata.class).in(Scopes.SINGLETON);
     }
 }

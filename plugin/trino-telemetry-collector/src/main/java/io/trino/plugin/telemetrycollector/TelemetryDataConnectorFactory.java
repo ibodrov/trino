@@ -13,7 +13,7 @@ import java.util.Map;
 import static io.trino.plugin.base.Versions.checkSpiVersion;
 import static java.util.Objects.requireNonNull;
 
-public class DataAccessConnectorFactory
+public class TelemetryDataConnectorFactory
         implements ConnectorFactory
 {
     @Override
@@ -38,6 +38,6 @@ public class DataAccessConnectorFactory
                 .setRequiredConfigurationProperties(config)
                 .initialize();
 
-        return injector.getInstance(DataAccessConnector.class);
+        return injector.getInstance(TelemetryDataConnector.class);
     }
 }
