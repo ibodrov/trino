@@ -13,12 +13,18 @@ import io.trino.spi.connector.ConnectorTableHandle;
 import io.trino.spi.connector.ConnectorTransactionHandle;
 import io.trino.spi.connector.InMemoryRecordSet;
 import io.trino.spi.connector.RecordSet;
+import io.trino.spi.function.FunctionProvider;
 import io.trino.spi.ptf.ConnectorTableFunction;
+import io.trino.spi.ptf.ConnectorTableFunctionHandle;
+import io.trino.spi.ptf.TableFunctionDataProcessor;
+import io.trino.spi.ptf.TableFunctionProcessorProvider;
+import io.trino.spi.ptf.TableFunctionSplitProcessor;
 import io.trino.spi.transaction.IsolationLevel;
 
 import javax.inject.Inject;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static io.trino.spi.type.VarcharType.VARCHAR;
@@ -69,6 +75,32 @@ public class DataAccessConnector
     @Override
     public ConnectorTransactionHandle beginTransaction(IsolationLevel isolationLevel, boolean readOnly, boolean autoCommit)
     {
-        return new DataAccessTransactionHandle();
+        return DataAccessTransactionHandle.INSTANCE;
+    }
+
+    @Override
+    public Optional<FunctionProvider> getFunctionProvider()
+    {
+        return Optional.of(new FunctionProvider()
+        {
+            @Override
+            public TableFunctionProcessorProvider getTableFunctionProcessorProvider(ConnectorTableFunctionHandle functionHandle)
+            {
+                return new TableFunctionProcessorProvider()
+                {
+                    @Override
+                    public TableFunctionDataProcessor getDataProcessor(ConnectorTableFunctionHandle handle)
+                    {
+                        return null;
+                    }
+
+                    @Override
+                    public TableFunctionSplitProcessor getSplitProcessor(ConnectorSession session, ConnectorTableFunctionHandle handle, ConnectorSplit split)
+                    {
+                        return null;
+                    }
+                };
+            }
+        });
     }
 }
