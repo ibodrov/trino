@@ -24,8 +24,6 @@ import static io.trino.testing.TestingSession.testSessionBuilder;
 
 public final class TelemetryQueryRunner
 {
-    public static final String ICEBERG_CATALOG = "iceberg";
-
     private TelemetryQueryRunner() {}
 
     public static DistributedQueryRunner createQueryRunner()
@@ -45,10 +43,7 @@ public final class TelemetryQueryRunner
     {
         protected Builder()
         {
-            super(testSessionBuilder()
-                    .setCatalog(ICEBERG_CATALOG)
-                    .setSchema("tpch")
-                    .build());
+            super(testSessionBuilder().build());
         }
 
         @Override
@@ -76,6 +71,7 @@ public final class TelemetryQueryRunner
                 throws Exception
         {
             DistributedQueryRunner queryRunner = TelemetryQueryRunner.builder()
+                    .setNodeCount(1)
                     .setCoordinatorProperties(Map.of("http-server.http.port", "8080"))
                     .build();
 

@@ -27,7 +27,10 @@ public class ReadSpansTableFunction
     }
 
     @Override
-    public TableFunctionAnalysis analyze(ConnectorSession session, ConnectorTransactionHandle transaction, Map<String, Argument> arguments)
+    public TableFunctionAnalysis analyze(
+            ConnectorSession session,
+            ConnectorTransactionHandle transaction,
+            Map<String, Argument> arguments)
     {
         return TableFunctionAnalysis.builder()
                 .handle(new ReadSpansFunctionHandle())
@@ -37,8 +40,5 @@ public class ReadSpansTableFunction
     public static class ReadSpansFunctionHandle
             implements ConnectorTableFunctionHandle
     {
-        {
-            System.out.println("!!!!!!! HANDLE");
-        }
     }
 }
