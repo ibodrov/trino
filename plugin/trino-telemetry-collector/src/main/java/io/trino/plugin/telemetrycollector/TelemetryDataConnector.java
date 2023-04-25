@@ -16,7 +16,6 @@ import io.trino.spi.connector.RecordSet;
 import io.trino.spi.function.FunctionProvider;
 import io.trino.spi.ptf.ConnectorTableFunction;
 import io.trino.spi.ptf.ConnectorTableFunctionHandle;
-import io.trino.spi.ptf.TableFunctionDataProcessor;
 import io.trino.spi.ptf.TableFunctionProcessorProvider;
 import io.trino.spi.ptf.TableFunctionSplitProcessor;
 import io.trino.spi.transaction.IsolationLevel;
@@ -89,15 +88,9 @@ public class TelemetryDataConnector
                 return new TableFunctionProcessorProvider()
                 {
                     @Override
-                    public TableFunctionDataProcessor getDataProcessor(ConnectorTableFunctionHandle handle)
-                    {
-                        return null;
-                    }
-
-                    @Override
                     public TableFunctionSplitProcessor getSplitProcessor(ConnectorSession session, ConnectorTableFunctionHandle handle, ConnectorSplit split)
                     {
-                        return null;
+                        return new ReadSpansSplitProcessor();
                     }
                 };
             }
