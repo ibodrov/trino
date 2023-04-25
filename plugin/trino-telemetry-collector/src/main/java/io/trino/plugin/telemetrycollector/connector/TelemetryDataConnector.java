@@ -1,7 +1,8 @@
-package io.trino.plugin.telemetrycollector;
+package io.trino.plugin.telemetrycollector.connector;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import io.trino.plugin.telemetrycollector.receiver.TelemetryStore;
 import io.trino.spi.connector.ColumnHandle;
 import io.trino.spi.connector.Connector;
 import io.trino.spi.connector.ConnectorMetadata;
@@ -33,11 +34,13 @@ public class TelemetryDataConnector
         implements Connector
 {
     private final TelemetryDataMetadata metadata;
+    private final TelemetryStore telemetryStore;
 
     @Inject
-    public TelemetryDataConnector(TelemetryDataMetadata metadata)
+    public TelemetryDataConnector(TelemetryDataMetadata metadata, TelemetryStore telemetryStore)
     {
         this.metadata = requireNonNull(metadata, "metadata is null");
+        this.telemetryStore = requireNonNull(telemetryStore, "telemetryStore is null");
     }
 
     @Override
@@ -90,7 +93,7 @@ public class TelemetryDataConnector
                     @Override
                     public TableFunctionSplitProcessor getSplitProcessor(ConnectorSession session, ConnectorTableFunctionHandle handle, ConnectorSplit split)
                     {
-                        return new ReadSpansSplitProcessor();
+                        return new ReadSpansSplitProcessor(telemetryStore);
                     }
                 };
             }

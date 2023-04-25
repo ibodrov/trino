@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.trino.plugin.telemetrycollector;
+package io.trino.plugin.telemetrycollector.connector;
 
 import io.trino.spi.connector.ConnectorMetadata;
 

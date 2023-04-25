@@ -1,4 +1,4 @@
-package io.trino.plugin.telemetrycollector;
+package io.trino.plugin.telemetrycollector.connector;
 
 import io.trino.spi.connector.ConnectorTransactionHandle;
 

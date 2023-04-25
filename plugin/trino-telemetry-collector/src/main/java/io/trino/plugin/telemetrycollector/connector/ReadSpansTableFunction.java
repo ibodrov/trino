@@ -1,4 +1,4 @@
-package io.trino.plugin.telemetrycollector;
+package io.trino.plugin.telemetrycollector.connector;
 
 import com.google.common.collect.ImmutableList;
 import io.trino.spi.connector.ConnectorSession;

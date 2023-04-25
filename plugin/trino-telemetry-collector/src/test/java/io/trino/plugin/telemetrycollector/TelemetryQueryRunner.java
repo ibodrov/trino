@@ -52,7 +52,7 @@ public final class TelemetryQueryRunner
         {
             DistributedQueryRunner queryRunner = super.build();
             try {
-                queryRunner.installPlugin(new TrinoTelemetryPlugin());
+                queryRunner.installPlugin(new TelemetryCollectorPlugin());
                 queryRunner.createCatalog("telemetry_data", "telemetry_data", ImmutableMap.of());
                 return queryRunner;
             }

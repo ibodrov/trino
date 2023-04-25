@@ -1,10 +1,11 @@
 package io.trino.plugin.telemetrycollector;
 
 import com.google.common.collect.ImmutableList;
+import io.trino.plugin.telemetrycollector.connector.TelemetryDataConnectorFactory;
 import io.trino.spi.Plugin;
 import io.trino.spi.connector.ConnectorFactory;
 
-public class TrinoTelemetryPlugin
+public class TelemetryCollectorPlugin
         implements Plugin
 {
     @Override

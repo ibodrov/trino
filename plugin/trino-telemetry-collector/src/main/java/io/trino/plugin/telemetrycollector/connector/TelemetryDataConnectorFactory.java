@@ -1,9 +1,10 @@
-package io.trino.plugin.telemetrycollector;
+package io.trino.plugin.telemetrycollector.connector;
 
 import com.google.inject.Injector;
 import io.airlift.bootstrap.Bootstrap;
 import io.airlift.json.JsonModule;
 import io.trino.plugin.base.TypeDeserializerModule;
+import io.trino.plugin.telemetrycollector.TelemetryCollectorModule;
 import io.trino.spi.connector.Connector;
 import io.trino.spi.connector.ConnectorContext;
 import io.trino.spi.connector.ConnectorFactory;
