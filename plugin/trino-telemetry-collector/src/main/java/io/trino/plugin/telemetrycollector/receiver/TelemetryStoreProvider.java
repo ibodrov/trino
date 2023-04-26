@@ -3,6 +3,7 @@ package io.trino.plugin.telemetrycollector.receiver;
 import javax.inject.Provider;
 
 import java.nio.file.Path;
+import java.time.Instant;
 
 public class TelemetryStoreProvider
         implements Provider<TelemetryStore>
@@ -10,7 +11,7 @@ public class TelemetryStoreProvider
     @Override
     public TelemetryStore get()
     {
-        Path baseDir = Path.of("/tmp/telemetry"); // TODO
+        Path baseDir = Path.of("/tmp/telemetry/" + Instant.now().toString()); // TODO
         return new FilesystemTelemetryStore(baseDir);
     }
 }

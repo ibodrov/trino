@@ -15,11 +15,13 @@ import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest;
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponse;
 import io.opentelemetry.proto.collector.trace.v1.TraceServiceGrpc;
 import io.trino.plugin.telemetrycollector.TelemetryCollectorConfig;
+import io.trino.spi.NodeManager;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class OtlpGrpcServer
@@ -28,11 +30,16 @@ public class OtlpGrpcServer
 
     private final Server grpcServer;
     private final TelemetryReceiver receiver;
+    private final NodeManager nodeManager;
 
     @Inject
-    public OtlpGrpcServer(TelemetryReceiver receiver, TelemetryCollectorConfig config)
+    public OtlpGrpcServer(
+            TelemetryReceiver receiver,
+            TelemetryCollectorConfig config,
+            NodeManager nodeManager)
     {
-        this.receiver = receiver;
+        this.receiver = requireNonNull(receiver, "receiver is null");
+        this.nodeManager = requireNonNull(nodeManager, "nodeManager is null");
         this.grpcServer = Grpc.newServerBuilderForPort(config.getGrpcServerPort(),
                         /* TODO */ InsecureServerCredentials.create())
                 .addService(new TraceService())
@@ -45,6 +52,11 @@ public class OtlpGrpcServer
     public synchronized void start()
             throws Exception
     {
+        if (!nodeManager.getCurrentNode().isCoordinator()) {
+            log.info("OLTP receiver disabled (the current node is not the coordinator node)");
+            return;
+        }
+
         grpcServer.start();
         log.info("OTLP receiver started");
     }

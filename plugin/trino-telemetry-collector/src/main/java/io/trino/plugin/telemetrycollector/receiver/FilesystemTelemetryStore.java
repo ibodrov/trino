@@ -23,7 +23,7 @@ public class FilesystemTelemetryStore
     private static final Logger log = Logger.get(FilesystemTelemetryStore.class);
 
     private final Path baseDir;
-    private final Striped<Lock> locks;
+    private final Striped<Lock> locks; // TODO makes more sense for a more sophisticated partitioning scheme
 
     public FilesystemTelemetryStore(Path baseDir)
     {

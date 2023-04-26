@@ -1,6 +1,7 @@
 package io.trino.plugin.telemetrycollector.connector;
 
 import com.google.common.collect.ImmutableList;
+import io.trino.plugin.telemetrycollector.connector.ReadSpansTableFunction.ReadSpansFunctionHandle;
 import io.trino.spi.HostAddress;
 import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.connector.ConnectorSplit;
@@ -22,6 +23,10 @@ public class TelemetryDataSplitManager
             ConnectorSession session,
             ConnectorTableFunctionHandle function)
     {
+        if (!(function instanceof ReadSpansFunctionHandle)) {
+            throw new IllegalStateException("Unexpected handle type");
+        }
+
         return new FixedSplitSource(new TelemetryDataConnectorSplit(Instant.now()));
     }
 

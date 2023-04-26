@@ -5,6 +5,7 @@ import io.airlift.bootstrap.Bootstrap;
 import io.airlift.json.JsonModule;
 import io.trino.plugin.base.TypeDeserializerModule;
 import io.trino.plugin.telemetrycollector.TelemetryCollectorModule;
+import io.trino.spi.NodeManager;
 import io.trino.spi.connector.Connector;
 import io.trino.spi.connector.ConnectorContext;
 import io.trino.spi.connector.ConnectorFactory;
@@ -32,7 +33,10 @@ public class TelemetryDataConnectorFactory
         Bootstrap app = new Bootstrap(
                 new JsonModule(),
                 new TypeDeserializerModule(context.getTypeManager()),
-                new TelemetryCollectorModule());
+                new TelemetryCollectorModule(),
+                binder -> {
+                    binder.bind(NodeManager.class).toInstance(context.getNodeManager());
+                });
 
         Injector injector = app
                 .doNotInitializeLogging()
