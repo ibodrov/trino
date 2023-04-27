@@ -15,13 +15,14 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkState;
 import static io.trino.spi.ptf.TableFunctionProcessorState.Finished.FINISHED;
 import static io.trino.spi.ptf.TableFunctionProcessorState.Processed.produced;
+import static io.trino.spi.type.BigintType.BIGINT;
 import static io.trino.spi.type.VarcharType.VARCHAR;
 
 public class ReadSpansSplitProcessor
         implements TableFunctionSplitProcessor
 {
     private final Logger log = Logger.get(ReadSpansSplitProcessor.class);
-    private final PageBuilder pageBuilder = new PageBuilder(ImmutableList.of(VARCHAR, VARCHAR));
+    private final PageBuilder pageBuilder = new PageBuilder(ImmutableList.of(VARCHAR, BIGINT, BIGINT, VARCHAR));
 
     private final TelemetryStore store;
 
@@ -58,8 +59,14 @@ public class ReadSpansSplitProcessor
             // trace_id
             VARCHAR.writeString(pageBuilder.getBlockBuilder(0), span.getTraceId().toStringUtf8());
 
+            // start_ts
+            BIGINT.writeLong(pageBuilder.getBlockBuilder(1), span.getStartTimeUnixNano());
+
+            // end_ts
+            BIGINT.writeLong(pageBuilder.getBlockBuilder(2), span.getEndTimeUnixNano());
+
             // span
-            VARCHAR.writeString(pageBuilder.getBlockBuilder(1), JsonHelper.serializeSpan(span));
+            VARCHAR.writeString(pageBuilder.getBlockBuilder(3), JsonHelper.serializeSpan(span));
 
             cursor++;
         }
