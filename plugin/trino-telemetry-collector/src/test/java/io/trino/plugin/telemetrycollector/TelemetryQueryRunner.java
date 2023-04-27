@@ -14,6 +14,7 @@
 package io.trino.plugin.telemetrycollector;
 
 import com.google.common.collect.ImmutableMap;
+import io.airlift.jaxrs.JaxrsModule;
 import io.airlift.log.Logger;
 import io.trino.testing.DistributedQueryRunner;
 
@@ -25,18 +26,6 @@ import static io.trino.testing.TestingSession.testSessionBuilder;
 public final class TelemetryQueryRunner
 {
     private TelemetryQueryRunner() {}
-
-    public static DistributedQueryRunner createQueryRunner()
-            throws Exception
-    {
-        return builder()
-                .build();
-    }
-
-    public static Builder builder()
-    {
-        return new Builder();
-    }
 
     public static class Builder
             extends DistributedQueryRunner.Builder<Builder>
@@ -70,9 +59,10 @@ public final class TelemetryQueryRunner
         public static void main(String[] args)
                 throws Exception
         {
-            DistributedQueryRunner queryRunner = TelemetryQueryRunner.builder()
+            DistributedQueryRunner queryRunner = new Builder()
                     .setNodeCount(1)
                     .setCoordinatorProperties(Map.of("http-server.http.port", "8080"))
+                    .setAdditionalModule(new JaxrsModule())
                     .build();
 
             Logger log = Logger.get(SimpleTelemetryQueryRunnerMain.class);

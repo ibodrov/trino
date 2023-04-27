@@ -4,14 +4,17 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import io.trino.plugin.telemetrycollector.connector.TelemetryDataConnector;
 import io.trino.plugin.telemetrycollector.connector.TelemetryDataMetadata;
-import io.trino.plugin.telemetrycollector.receiver.StoringTelemetryReceiver;
 import io.trino.plugin.telemetrycollector.receiver.OtlpGrpcServer;
+import io.trino.plugin.telemetrycollector.receiver.StoringTelemetryReceiver;
 import io.trino.plugin.telemetrycollector.receiver.TelemetryReceiver;
 import io.trino.plugin.telemetrycollector.receiver.TelemetryStore;
 import io.trino.plugin.telemetrycollector.receiver.TelemetryStoreProvider;
+import io.trino.plugin.telemetrycollector.ui.JaegerApiResource;
+import io.trino.plugin.telemetrycollector.ui.JaegerUIResource;
 
 import static com.google.inject.Scopes.SINGLETON;
 import static io.airlift.configuration.ConfigBinder.configBinder;
+import static io.airlift.jaxrs.JaxrsBinder.jaxrsBinder;
 
 public class TelemetryCollectorModule
         implements Module
@@ -34,6 +37,9 @@ public class TelemetryCollectorModule
 
         binder.bind(TelemetryStore.class).toProvider(TelemetryStoreProvider.class).in(SINGLETON);
 
-        // TODO ui?
+        // UI
+
+        jaxrsBinder(binder).bind(JaegerUIResource.class);
+        jaxrsBinder(binder).bind(JaegerApiResource.class);
     }
 }
