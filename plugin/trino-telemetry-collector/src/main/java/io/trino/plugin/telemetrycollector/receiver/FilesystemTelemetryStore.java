@@ -96,7 +96,7 @@ public class FilesystemTelemetryStore
         public void append(Span span)
                 throws TelemetryStoreException
         {
-            String json = JsonHelper.serializeSpanBuilder(JsonHelper.normalize(span));
+            String json = JsonHelper.serializeSpan(span);
 
             try {
                 lock.lock();

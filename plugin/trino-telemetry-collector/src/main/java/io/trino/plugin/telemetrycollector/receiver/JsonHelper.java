@@ -11,9 +11,9 @@ import static com.google.protobuf.ByteString.copyFromUtf8;
 
 public class JsonHelper
 {
+    // TODO is it common to use random ByteStrings for IDs?
     public static Span.Builder normalize(Span span)
     {
-        // TODO is it common to use random ByteStrings for IDs?
         return span.toBuilder()
                 .setTraceId(toHex(span.getTraceId()))
                 .setSpanId(toHex(span.getSpanId()))

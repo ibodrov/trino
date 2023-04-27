@@ -57,7 +57,7 @@ public class ReadSpansSplitProcessor
             pageBuilder.declarePosition();
 
             // trace_id
-            VARCHAR.writeString(pageBuilder.getBlockBuilder(0), span.getTraceId().toStringUtf8());
+            VARCHAR.writeString(pageBuilder.getBlockBuilder(0), JsonHelper.toHex(span.getTraceId()).toStringUtf8());
 
             // start_ts
             BIGINT.writeLong(pageBuilder.getBlockBuilder(1), span.getStartTimeUnixNano());
