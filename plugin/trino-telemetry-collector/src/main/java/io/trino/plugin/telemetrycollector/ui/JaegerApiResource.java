@@ -18,6 +18,7 @@ public class JaegerApiResource
     @GET
     @Path("services")
     @Produces(APPLICATION_JSON)
+
     public ListResponse<String> services()
     {
         return ListResponse.of("demo-service");

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.stream.Stream;
 
@@ -46,7 +47,7 @@ public class FilesystemTelemetryStore
     }
 
     @Override
-    public Collection<Span> readSpans()
+    public List<Span> readSpans()
     {
         return findAllPartitions()
                 .flatMap(Partition::readAll)
@@ -95,7 +96,7 @@ public class FilesystemTelemetryStore
         public void append(Span span)
                 throws TelemetryStoreException
         {
-            String json = JsonHelper.serializeSpan(span);
+            String json = JsonHelper.serializeSpanBuilder(JsonHelper.normalize(span));
 
             try {
                 lock.lock();

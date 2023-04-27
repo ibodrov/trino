@@ -2,11 +2,11 @@ package io.trino.plugin.telemetrycollector.connector;
 
 import com.google.common.collect.ImmutableList;
 import io.airlift.log.Logger;
+import io.opentelemetry.proto.trace.v1.Span;
 import io.trino.plugin.telemetrycollector.receiver.JsonHelper;
 import io.trino.plugin.telemetrycollector.receiver.TelemetryStore;
 import io.trino.spi.Page;
 import io.trino.spi.PageBuilder;
-import io.trino.spi.block.BlockBuilder;
 import io.trino.spi.ptf.TableFunctionProcessorState;
 import io.trino.spi.ptf.TableFunctionSplitProcessor;
 
@@ -21,13 +21,13 @@ public class ReadSpansSplitProcessor
         implements TableFunctionSplitProcessor
 {
     private final Logger log = Logger.get(ReadSpansSplitProcessor.class);
-    private final PageBuilder pageBuilder = new PageBuilder(ImmutableList.of(VARCHAR));
+    private final PageBuilder pageBuilder = new PageBuilder(ImmutableList.of(VARCHAR, VARCHAR));
 
     private final TelemetryStore store;
 
-    private int index;
+    private int cursor;
     private boolean finished;
-    private List<String> data;
+    private List<Span> data;
 
     public ReadSpansSplitProcessor(TelemetryStore store)
     {
@@ -46,24 +46,31 @@ public class ReadSpansSplitProcessor
 
         if (data == null) {
             log.info("Loading data...");
-            // TODO use strings, avoid extra serialization
-            data = store.readSpans().stream().map(JsonHelper::serializeSpan).toList();
-            index = 0;
+            data = store.readSpans();
+            cursor = 0;
         }
 
-        BlockBuilder block = pageBuilder.getBlockBuilder(0);
+        while (!pageBuilder.isFull() && cursor < data.size()) {
+            Span span = data.get(cursor);
 
-        while (!pageBuilder.isFull() && index < data.size()) {
             pageBuilder.declarePosition();
-            VARCHAR.writeString(block, data.get(index));
-            index++;
+
+            // trace_id
+            VARCHAR.writeString(pageBuilder.getBlockBuilder(0), span.getTraceId().toStringUtf8());
+
+            // span
+            VARCHAR.writeString(pageBuilder.getBlockBuilder(1), JsonHelper.serializeSpan(span));
+
+            cursor++;
         }
+
         if (!pageBuilder.isFull()) {
             finished = true;
         }
 
         Page page = pageBuilder.build();
         pageBuilder.reset();
+
         return produced(page);
     }
 }

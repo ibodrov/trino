@@ -18,12 +18,12 @@ public class ReadSpansTableFunction
         extends AbstractConnectorTableFunction
 {
     private static final Descriptor RETURNED_TYPE = Descriptor.descriptor(
-            ImmutableList.of("span"),
-            ImmutableList.of(VARCHAR));
+            ImmutableList.of("trace_id", "span"),
+            ImmutableList.of(VARCHAR, VARCHAR));
 
     public ReadSpansTableFunction()
     {
-        super("hello", "read_spans", ImmutableList.of(), new DescribedTable(RETURNED_TYPE));
+        super("telemetry", "read_spans", ImmutableList.of(), new DescribedTable(RETURNED_TYPE));
     }
 
     @Override
