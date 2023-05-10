@@ -22,7 +22,7 @@ import io.airlift.log.Logging;
 import io.trino.plugin.hive.containers.HiveHadoop;
 import io.trino.plugin.hive.containers.HiveMinioDataLake;
 import io.trino.plugin.iceberg.catalog.jdbc.TestingIcebergJdbcServer;
-import io.trino.plugin.telemetrycollector.TelemetryCollectorPlugin;
+import io.trino.tracing.plugin.TracingPlugin;
 import io.trino.plugin.tpch.TpchPlugin;
 import io.trino.testing.DistributedQueryRunner;
 import io.trino.testing.containers.Minio;
@@ -130,7 +130,7 @@ public final class IcebergQueryRunner
         {
             DistributedQueryRunner queryRunner = super.build();
             try {
-                queryRunner.installPlugin(new TelemetryCollectorPlugin());
+                queryRunner.installPlugin(new TracingPlugin());
                 queryRunner.createCatalog("telemetry_data", "telemetry_data", ImmutableMap.of());
 
                 queryRunner.installPlugin(new TpchPlugin());
