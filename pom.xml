@@ -112,6 +112,7 @@
         <module>core/trino-server-main</module>
         <module>core/trino-server-rpm</module>
         <module>core/trino-spi</module>
+        <module>core/trino-tracing</module>
         <module>docs</module>
         <module>lib/trino-array</module>
         <module>lib/trino-collect</module>
@@ -181,7 +182,6 @@
         <module>plugin/trino-thrift-testing-server</module>
         <module>plugin/trino-tpcds</module>
         <module>plugin/trino-tpch</module>
-        <module>plugin/trino-telemetry-collector</module>
         <module>service/trino-proxy</module>
         <module>service/trino-verifier</module>
         <module>testing/trino-benchmark</module>
@@ -660,7 +660,7 @@
 
             <dependency>
                 <groupId>io.trino</groupId>
-                <artifactId>trino-telemetry-collector</artifactId>
+                <artifactId>trino-tracing</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

@@ -85,7 +85,7 @@
 
         <dependency>
             <groupId>io.trino</groupId>
-            <artifactId>trino-telemetry-collector</artifactId>
+            <artifactId>trino-tracing</artifactId>
         </dependency>
 
         <dependency>
